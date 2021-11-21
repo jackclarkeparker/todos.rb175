@@ -19,7 +19,6 @@ end
 # GET  /lists/new      -> new list form
 # POST /lists          -> create new list
 # GET  /lists/1        -> view a single list
-# POST /
 
 # View list of lists
 get "/lists" do
@@ -35,6 +34,7 @@ end
 # Create a new list
 post "/lists" do
   session[:lists] << { name: params[:list_name], todos: [] }
+  session[:success] = "The list has been created."
   redirect "/lists"
 end
 

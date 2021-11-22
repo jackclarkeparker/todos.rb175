@@ -6,9 +6,12 @@
     </ul>
   </header>
   <ul>
-    <% @list[:todos].each do |todo| %>
+    <% @list[:todos].each_with_index do |todo, index| %>
       <li class="todos">
         <h3><%= todo[:name] %></h3>
+        <form class="delete" action="/lists/<%= @list_id %>/todos/<%= index %>/destroy" method="post">
+          <button type="submit">Delete</button>
+        </form>
       </li>
     <% end %>
   </ul>
@@ -27,7 +30,6 @@
     <input type="submit" value="Add">
   </fieldset>
 </form>
-
 
 <% content_for :header_links do %>
   <a href="/lists">All Lists</a>

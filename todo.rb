@@ -123,3 +123,14 @@ post "/lists/:list_id/todos" do
     redirect "/lists/#{@list_id}"
   end
 end
+
+# Delete a todo from a list
+post "/lists/:list_id/todos/:todo_id/destroy" do
+  list_id = params[:list_id].to_i
+  list = session[:lists][list_id]
+  
+  todo_id = params[:todo_id].to_i
+  list[:todos].delete_at(todo_id)
+
+  redirect "/lists/#{list_id}"
+end

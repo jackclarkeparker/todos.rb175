@@ -100,3 +100,18 @@ post "/lists/:id/delete" do
   session[:success] = 'The list has been deleted.'
   redirect "/lists"
 end
+
+# Enter a new todo item for the list specified by :id
+post "/lists/:id/todos" do
+  todo = params[:todo].strip
+  @id = params[:id].to_i
+  @list = session[:lists][@id]
+
+  if !todo.size.between?(1, 100)
+    session[:error] = 'The todo name must be between 1 and 100 characters.'
+    erb :list, layout: :layout
+  else
+    @list[:todos] << todo
+    redirect "/lists/#{@id}"
+  end
+end

@@ -72,20 +72,22 @@ end
 # Renders the edit list name form
 get "/lists/:id/edit" do
   @id = params[:id].to_i
+  @list = session[:lists][@id]
   erb :edit_list, layout: :layout
 end
 
-# Edits an existing todo list (It may just be the name at first, but if we want to edit other features in future, these actions will also be carried out here.)
+# Updates an existing todo list (It may just be the name at first, but if we want to edit other features in future, these actions will also be carried out here.)
 post "/lists/:id" do
   list_name = params[:list_name].strip
   @id = params[:id].to_i
+  @list = session[:lists][@id]
 
   error = error_for_list_name(list_name)
   if error
     session[:error] = error
     erb :edit_list, layout: :layout
   else
-    session[:lists][@id][:name] = list_name
+    @list[:name] = list_name
     session[:success] = 'The list name has been updated.'
     redirect "/lists/#{@id}"
   end

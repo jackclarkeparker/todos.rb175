@@ -2,7 +2,11 @@
   <header>
     <h2><%= "Editing '#{find_list_name(@id)}'" %></h2>
     <ul>
-      <li id="delete"><a href="/lists/<%= @id %>/delete">Delete List</a></li>
+      <li>
+        <form action="/lists/<%= params[:id] %>/delete" method="post">
+          <button type="submit" class="delete">Delete List</button>
+        </form>
+      </li>
     </ul>
   </header>
 </section>

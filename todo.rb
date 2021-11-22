@@ -94,7 +94,9 @@ post "/lists/:id" do
 end
 
 # Deletes the list specified by :id
-get "/lists/:id/delete" do
-  session[:lists].delete_at(params[:id].to_i)
+post "/lists/:id/delete" do
+  id = params[:id].to_i
+  session[:lists].delete_at(id)
+  session[:success] = 'The list has been deleted.'
   redirect "/lists"
 end

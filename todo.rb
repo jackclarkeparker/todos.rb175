@@ -63,9 +63,9 @@ post '/lists' do
 end
 
 # Visits the page of a specific list
-get "/lists/:id" do
-  @id = params[:id].to_i
-  @list = session[:lists][@id]
+get "/lists/:list_id" do
+  @list_id = params[:id].to_i
+  @list = session[:lists][@list_id]
   erb :list, layout: :layout
 end
 
@@ -101,17 +101,25 @@ post "/lists/:id/delete" do
   redirect "/lists"
 end
 
-# Enter a new todo item for the list specified by :id
-post "/lists/:id/todos" do
-  todo = params[:todo].strip
-  @id = params[:id].to_i
-  @list = session[:lists][@id]
+def error_for_todo(name)
+  if !name.size.between?(1, 100)
+    "The todo name must be between 1 and 100 characters."
+  end
+end
 
-  if !todo.size.between?(1, 100)
-    session[:error] = 'The todo name must be between 1 and 100 characters.'
+# Enter a new todo item for the list specified by :id
+post "/lists/:list_id/todos" do
+  text = params[:todo].strip
+  @list_id = params[:list_id].to_i
+  @list = session[:lists][@list_id]
+
+  error = error_for_todo(text)
+  if error
+    session[:error] = error
     erb :list, layout: :layout
   else
-    @list[:todos] << todo
-    redirect "/lists/#{@id}"
+    @list[:todos] << {name: text, completed: false}
+    session[:success] = "The todo was added."
+    redirect "/lists/#{@list_id}"
   end
 end

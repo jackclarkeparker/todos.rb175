@@ -1,7 +1,9 @@
 <section id="todos">
   <header>
     <h2><%= "Editing '#{find_list_name(@id)}'" %></h2>
-    <a href="/lists/<%= @id %>/edit" id="todos">Delete List</a>
+    <ul>
+      <li id="delete"><a href="/lists/<%= @id %>/delete">Delete List</a></li>
+    </ul>
   </header>
 </section>
 

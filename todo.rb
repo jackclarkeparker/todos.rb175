@@ -64,7 +64,7 @@ end
 
 # Visits the page of a specific list
 get "/lists/:list_id" do
-  @list_id = params[:id].to_i
+  @list_id = params[:list_id].to_i
   @list = session[:lists][@list_id]
   erb :list, layout: :layout
 end

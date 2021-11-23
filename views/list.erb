@@ -7,7 +7,12 @@
   </header>
   <ul>
     <% @list[:todos].each_with_index do |todo, index| %>
-      <li class="todos">
+      <li class="<%= "complete" if todo[:completed] %>">
+        <form action="/lists/<%= @list_id %>/todos/<%= index %>" method="post" class="check">
+           <input type="hidden" name="completed" value=<%= todo[:completed] %> />
+           <button type="submit">Complete</button>
+        </form>
+
         <h3><%= todo[:name] %></h3>
         <form class="delete" action="/lists/<%= @list_id %>/todos/<%= index %>/destroy" method="post">
           <button type="submit">Delete</button>

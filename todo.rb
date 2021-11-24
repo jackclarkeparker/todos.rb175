@@ -9,8 +9,15 @@ configure do
 end
 
 helpers do
-  def find_list_name(id)
-    session[:lists][id][:name]
+  def todos_completed?(list)
+    list[:todos].size > 0 && 
+    list[:todos].all? { |todo| todo[:completed] == true }
+  end
+
+  def proportion_remaining(list)
+    total = list[:todos].size
+    remaining = list[:todos].count { |todo| todo[:completed] == false }
+    "#{remaining} / #{total}"
   end
 end
 
@@ -156,7 +163,7 @@ post "/lists/:list_id/complete_all" do
   list[:todos].each do |todo|
     todo[:completed] = true
   end
-  
+
   session[:success] = "All todos have been completed!"
   redirect "/lists/#{list_id}"
 end

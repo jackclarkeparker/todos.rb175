@@ -2,13 +2,11 @@
   <header>
     <h2><%= @list[:name] %></h2>
     <ul>
-      <% if @list[:todos].any? { |todo| todo[:completed] == false } %>
-        <li>
-          <form action="/lists/<%= @list_id %>/complete_all" method="post">
-            <button class="check" type="submit">Complete All</button>
-          </form>
-        </li>
-      <% end %>
+      <li>
+        <form action="/lists/<%= @list_id %>/complete_all" method="post">
+          <button class="check" type="submit">Complete All</button>
+        </form>
+      </li>
       <li><a class="edit" href="/lists/<%= @list_id %>/edit">Edit List</a></li>
     </ul>
   </header>

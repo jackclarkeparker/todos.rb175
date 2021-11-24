@@ -11,7 +11,7 @@ end
 helpers do
   def todos_completed?(list)
     list[:todos].size > 0 && 
-    list[:todos].all? { |todo| todo[:completed] == true }
+    list[:todos].all? { |todo| todo[:completed] }
   end
 
   def proportion_remaining(list)

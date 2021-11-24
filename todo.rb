@@ -10,14 +10,19 @@ end
 
 helpers do
   def todos_completed?(list)
-    list[:todos].size > 0 && 
-    list[:todos].all? { |todo| todo[:completed] }
+    todos_count(list) > 0 && todos_remaining_count(list) == 0
   end
 
-  def proportion_remaining(list)
-    total = list[:todos].size
-    remaining = list[:todos].count { |todo| todo[:completed] == false }
-    "#{remaining} / #{total}"
+  def list_class(list)
+    "complete" if todos_completed?(list)
+  end
+
+  def todos_count(list)
+    list[:todos].size
+  end
+
+  def todos_remaining_count(list)
+    list[:todos].count { |todo| todo[:completed] == false }
   end
 end
 

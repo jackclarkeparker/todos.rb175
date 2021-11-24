@@ -142,8 +142,8 @@ post "/lists/:list_id/todos/:todo_id" do
   list = session[:lists][list_id]
 
   todo_id = params[:todo_id].to_i
-  todo = list[:todos][todo_id]
-  todo[:completed] = params[:completed] == "false" ? true : false
+  is_completed = params[:completed] == 'true'
+  list[:todos][todo_id][:completed] = is_completed
 
   redirect "/lists/#{list_id}"
 end

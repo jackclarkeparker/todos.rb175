@@ -4,7 +4,7 @@
     <ul>
       <% if @list[:todos].any? { |todo| todo[:completed] == false } %>
         <li>
-          <form action="/lists/<%= @list_id %>/complete_all_todos" method="post">
+          <form action="/lists/<%= @list_id %>/complete_all" method="post">
             <button class="check" type="submit">Complete All</button>
           </form>
         </li>

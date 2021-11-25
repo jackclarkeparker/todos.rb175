@@ -68,6 +68,14 @@ get '/lists/new' do
   erb :new_list, layout: :layout
 end
 
+def load_list(id)
+  list = session[:lists][id]
+  return list if list
+
+  session[:error] = 'The specified list was not found.'
+  redirect '/lists'
+end
+
 # Return an error message if the name is invalid. Return nil if name is valid
 def error_for_list_name(name)
   if !name.size.between?(1, 100)
@@ -95,20 +103,14 @@ end
 # Visits the page of a specific list
 get '/lists/:list_id' do
   @list_id = params[:list_id].to_i
-  
-  if @list_id.between?(1, session[:lists].size)
-    @list = session[:lists][@list_id]
-    erb :list, layout: :layout
-  else
-    session[:error] = 'The specified list was not found.'
-    redirect '/lists'
-  end
+  @list = load_list(@list_id)
+  erb :list, layout: :layout
 end
 
 # Renders the edit list name form
 get '/lists/:id/edit' do
   @id = params[:id].to_i
-  @list = session[:lists][@id]
+  @list = load_list(@id)
   erb :edit_list, layout: :layout
 end
 

@@ -25,7 +25,7 @@ helpers do
   end
 
   def list_class(list)
-    "complete" if list_complete?(list)
+    'complete' if list_complete?(list)
   end
 
   def todos_count(list)
@@ -93,21 +93,27 @@ post '/lists' do
 end
 
 # Visits the page of a specific list
-get "/lists/:list_id" do
+get '/lists/:list_id' do
   @list_id = params[:list_id].to_i
-  @list = session[:lists][@list_id]
-  erb :list, layout: :layout
+  
+  if @list_id.between?(1, session[:lists].size)
+    @list = session[:lists][@list_id]
+    erb :list, layout: :layout
+  else
+    session[:error] = 'The specified list was not found.'
+    redirect '/lists'
+  end
 end
 
 # Renders the edit list name form
-get "/lists/:id/edit" do
+get '/lists/:id/edit' do
   @id = params[:id].to_i
   @list = session[:lists][@id]
   erb :edit_list, layout: :layout
 end
 
 # Updates an existing todo list (It may just be the name at first, but if we want to edit other features in future, these actions will also be carried out here.)
-post "/lists/:id" do
+post '/lists/:id' do
   list_name = params[:list_name].strip
   @id = params[:id].to_i
   @list = session[:lists][@id]
@@ -124,21 +130,21 @@ post "/lists/:id" do
 end
 
 # Deletes the list specified by :id
-post "/lists/:id/destroy" do
+post '/lists/:id/destroy' do
   id = params[:id].to_i
   session[:lists].delete_at(id)
   session[:success] = 'The list has been deleted.'
-  redirect "/lists"
+  redirect '/lists'
 end
 
 def error_for_todo(name)
   if !name.size.between?(1, 100)
-    "The todo name must be between 1 and 100 characters."
+    'The todo name must be between 1 and 100 characters.'
   end
 end
 
 # Enter a new todo item for the list specified by :id
-post "/lists/:list_id/todos" do
+post '/lists/:list_id/todos' do
   text = params[:todo].strip
   @list_id = params[:list_id].to_i
   @list = session[:lists][@list_id]
@@ -149,25 +155,25 @@ post "/lists/:list_id/todos" do
     erb :list, layout: :layout
   else
     @list[:todos] << {name: text, completed: false}
-    session[:success] = "The todo was added."
+    session[:success] = 'The todo was added.'
     redirect "/lists/#{@list_id}"
   end
 end
 
 # Delete a todo from a list
-post "/lists/:list_id/todos/:todo_id/destroy" do
+post '/lists/:list_id/todos/:todo_id/destroy' do
   list_id = params[:list_id].to_i
   list = session[:lists][list_id]
   
   todo_id = params[:todo_id].to_i
   list[:todos].delete_at(todo_id)
-  session[:success] = "The todo has been deleted."
+  session[:success] = 'The todo has been deleted.'
 
   redirect "/lists/#{list_id}"
 end
 
 # Mark / unmark a todo complete
-post "/lists/:list_id/todos/:todo_id" do
+post '/lists/:list_id/todos/:todo_id' do
   list_id = params[:list_id].to_i
   list = session[:lists][list_id]
 
@@ -179,7 +185,7 @@ post "/lists/:list_id/todos/:todo_id" do
 end
 
 # Mark all todos complete
-post "/lists/:list_id/complete_all" do
+post '/lists/:list_id/complete_all' do
   list_id = params[:list_id].to_i
   list = session[:lists][list_id]
 
@@ -187,6 +193,6 @@ post "/lists/:list_id/complete_all" do
     todo[:completed] = true
   end
 
-  session[:success] = "All todos have been completed!"
+  session[:success] = 'All todos have been completed!'
   redirect "/lists/#{list_id}"
 end

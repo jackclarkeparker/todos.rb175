@@ -1,6 +1,6 @@
 require 'sinatra'
 require 'sinatra/content_for'
-require 'sinatra/reloader'
+require 'sinatra/reloader' if development?
 require 'tilt/erubis'
 
 configure do
@@ -24,7 +24,7 @@ helpers do
   end
 
   def list_class(list)
-    "complete" if todos_completed?(list)
+    "complete" if list_complete?(list)
   end
 
   def todos_count(list)

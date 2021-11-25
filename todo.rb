@@ -35,9 +35,9 @@ helpers do
     list[:todos].count { |todo| todo[:completed] == false }
   end
 
-  def sort_list_of(list)
-    catalogue = list.each_with_index.map { |item, id| [item, id] }
-    catalogue.sort_by do |item, id| 
+  def sort_by_remaining(list)
+    list_with_ids = list.each_with_index.map { |item, id| [item, id] }
+    list_with_ids.sort_by do |item, _| 
       complete?(item) ? 1 : 0
     end
   end

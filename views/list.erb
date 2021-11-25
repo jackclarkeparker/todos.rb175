@@ -11,7 +11,7 @@
     </ul>
   </header>
   <ul>
-    <% sort_list_of(@list[:todos]).each do |todo, todo_id| %>
+    <% sort_by_remaining(@list[:todos]).each do |todo, todo_id| %>
       <% if todo[:completed] %>
         <li class="complete">
       <% else %>

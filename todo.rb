@@ -9,8 +9,18 @@ configure do
 end
 
 helpers do
-  def todos_completed?(list)
+  def list_complete?(list)
     todos_count(list) > 0 && todos_remaining_count(list) == 0
+  end
+
+  def complete?(item)
+    completed_status = item[:completed]
+    
+    if !completed_status.nil?
+      completed_status
+    else
+      list_complete?(item)
+    end
   end
 
   def list_class(list)
@@ -23,6 +33,13 @@ helpers do
 
   def todos_remaining_count(list)
     list[:todos].count { |todo| todo[:completed] == false }
+  end
+
+  def sort_list_of(list)
+    catalogue = list.each_with_index.map { |item, id| [item, id] }
+    catalogue.sort_by do |item, id| 
+      complete?(item) ? 1 : 0
+    end
   end
 end
 

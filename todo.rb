@@ -7,6 +7,7 @@ configure do
   enable :sessions
   set :session_secret, 'secret'
   set :erb, :escape_html => true
+  set :static_cache_control, [:public, :max_age => 5]
 end
 
 helpers do
